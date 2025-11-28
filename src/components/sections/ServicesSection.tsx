@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
+import Image from 'next/image';
 import { SERVICES } from '@/lib/constants';
 import Modal from '@/components/ui/Modal';
 
@@ -117,9 +118,11 @@ export default function ServicesSection() {
                 </div>
                 <div className="flex-1 relative overflow-hidden min-h-[300px] lg:min-h-0">
                   <div className="absolute inset-4 lg:inset-8">
-                    <img 
+                    <Image 
                       src={service.image}
                       alt={service.title}
+                      width={500}
+                      height={500}
                       className="w-full h-full object-cover rounded-2xl shadow-xl"
                     />
                   </div>

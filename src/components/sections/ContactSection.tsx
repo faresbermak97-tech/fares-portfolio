@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
+import Image from 'next/image';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { CONTACT_INFO } from '@/lib/constants';
 import type { FormStatus, Position } from '@/types';
@@ -65,7 +66,7 @@ export default function ContactSection() {
           document.body.style.overflow = 'auto';
         }, 2000);
       }
-    } catch (error) {
+    } catch {
       setFormStatus({ type: 'error', message: 'An unexpected error occurred.' });
     } finally {
       setIsSubmitting(false);
@@ -90,10 +91,10 @@ export default function ContactSection() {
             <div className="mb-8 md:mb-12 lg:mb-16">
               <div className="flex items-center gap-6 md:gap-8 mb-2">
                 <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-36 xl:h-36 rounded-full overflow-hidden flex-shrink-0 bg-gray-700">
-                  <img src="/images/Profiel-pic.jpg" alt="Fares Bermak" className="w-full h-full object-cover" />
+                  <Image src="/images/Profiel-pic.jpg" alt="Fares Bermak" width={150} height={150} className="w-full h-full object-cover" />
                 </div>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none">
-                  Let's work
+                  Let&apos;s work
                 </h1>
               </div>
               <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none">

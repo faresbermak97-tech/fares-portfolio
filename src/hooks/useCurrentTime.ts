@@ -10,15 +10,23 @@ export function useCurrentTime() {
   const [currentTime, setCurrentTime] = useState<string>('');
 
   useEffect(() => {
-    // Set initial time
-    setCurrentTime(formatTime(new Date()));
+    // Set initial time after component mounts (not during effect)
+    const initialTime = formatTime(new Date());
+    
+    // Use setTimeout to defer the state update
+    const initialTimer = setTimeout(() => {
+      setCurrentTime(initialTime);
+    }, 0);
 
     // Update every minute
     const interval = setInterval(() => {
       setCurrentTime(formatTime(new Date()));
     }, 60000);
 
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(initialTimer);
+      clearInterval(interval);
+    };
   }, []);
 
   return currentTime;

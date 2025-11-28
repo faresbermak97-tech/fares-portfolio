@@ -45,7 +45,7 @@ export default function ClientProvider({ children }: ClientProviderProps) {
 
   if (isLoading) {
     return (
-      <div className="fixed inset-0 z-[9999] bg-black flex items-center justify-center">
+      <div className="fixed inset-0 z-9999 bg-black flex items-center justify-center">
         <div className="text-white text-4xl md:text-6xl font-bold">
           {GREETINGS[greetingIndex]}
         </div>

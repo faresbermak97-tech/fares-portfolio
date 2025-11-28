@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function AboutSection() {
   return (
     <section id="about" className="relative py-24 md:py-32 lg:py-40 px-6 md:px-12 lg:px-16 bg-[#f5f5f5] overflow-hidden">
@@ -13,7 +15,7 @@ export default function AboutSection() {
 
             <div className="space-y-6">
               <p className="text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed">
-                I'm Fares Bermak, a disciplined Remote Administrative Professional who converts chaotic manual processes into dependable digital systems.
+                I&apos;m Fares Bermak, a disciplined Remote Administrative Professional who converts chaotic manual processes into dependable digital systems.
               </p>
 
               <p className="text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed">
@@ -21,12 +23,12 @@ export default function AboutSection() {
               </p>
 
               <p className="text-base md:text-lg lg:text-xl text-gray-700 leading-relaxed">
-                Trilingual (Arabic, English, French) with proven experience in asynchronous remote collaboration, I've helped businesses eliminate hours of repetitive work each week while reducing errors and improving team coordination.
+                Trilingual (Arabic, English, French) with proven experience in asynchronous remote collaboration, I&apos;ve helped businesses eliminate hours of repetitive work each week while reducing errors and improving team coordination.
               </p>
 
               <div className="pt-4 border-l-4 border-brand-primary pl-6 bg-white/50 py-4 rounded-r-lg">
                 <p className="text-lg md:text-xl text-gray-900 font-medium italic leading-relaxed">
-                  My approach is simple: Build systems that work reliably, automate what shouldn't require human attention, and keep everything organized so your business scales without friction.
+                  My approach is simple: Build systems that work reliably, automate what shouldn&apos;t require human attention, and keep everything organized so your business scales without friction.
                 </p>
               </div>
             </div>
@@ -35,12 +37,14 @@ export default function AboutSection() {
           {/* Right Side - Image */}
           <div className="relative group">
             <div className="relative overflow-hidden rounded-2xl shadow-2xl">
-              <img
+              <Image
                 src="/images/about me pic.jpeg"
                 alt="Fares Bermak - Professional Profile"
+                width={500}
+                height={500}
                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              <div className="absolute inset-0 bg-linear-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             </div>
 
             {/* Decorative Elements */}

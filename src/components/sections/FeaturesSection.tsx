@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import Image from 'next/image';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FEATURES } from '@/lib/constants';
@@ -16,7 +18,10 @@ export default function FeaturesSection() {
     if (typeof window === 'undefined') return;
     
     gsap.registerPlugin(ScrollTrigger);
-    setIsReady(true);
+    
+    // Use setTimeout to defer state update
+    const timer = setTimeout(() => setIsReady(true), 0);
+    return () => clearTimeout(timer);
   }, []);
 
   useEffect(() => {
@@ -95,9 +100,11 @@ export default function FeaturesSection() {
         >
           <div className={`flex justify-center items-center ${feature.reverse ? 'order-3' : 'order-1'}`}>
             <div className="slide-img">
-              <img 
-                src={feature.img} 
+              <Image 
+                src={feature.img}
+                width={500} 
                 alt={feature.highlight}
+                height={400}
                 className="w-[90%] max-w-[500px] h-[400px] object-cover rounded-2xl shadow-[0_8px_32px_rgba(77,100,255,0.15)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_48px_rgba(77,100,255,0.25)]"
               />
             </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 
 export default function HeroSection() {
   const textRef = useRef<HTMLDivElement>(null);
@@ -79,9 +80,11 @@ export default function HeroSection() {
 
       {/* Hero Image */}
       <div className="absolute inset-0 z-0">
-        <img
+        <Image
           src="/images/My Pic.jpg"
           alt="Fares Bermak"
+          width={1920}
+          height={1080}
           className="w-full h-full object-cover object-[center_20%]"
         />
         <div className="absolute inset-0 bg-black/5"></div>
