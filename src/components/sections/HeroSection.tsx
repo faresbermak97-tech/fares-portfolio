@@ -80,7 +80,7 @@ export default function HeroSection() {
       {/* Hero Image */}
       <div className="absolute inset-0 z-0">
         <img
-          src="/images/hero-image.jpg"
+          src="/images/My Pic.jpg"
           alt="Fares Bermak"
           className="w-full h-full object-cover object-[center_20%]"
         />

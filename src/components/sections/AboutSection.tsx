@@ -36,7 +36,7 @@ export default function AboutSection() {
           <div className="relative group">
             <div className="relative overflow-hidden rounded-2xl shadow-2xl">
               <img
-                src="/images/about-me.jpeg"
+                src="/images/about me pic.jpeg"
                 alt="Fares Bermak - Professional Profile"
                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-105"
               />

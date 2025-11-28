@@ -20,7 +20,7 @@ export const SERVICES: ServiceCard[] = [
     id: 1,
     title: 'Virtual Assistant & Admin Support',
     description: 'Complete day-to-day operational support: calendar management, inbox organization, client communications, meeting prep, and document control. I keep your operations smooth so you can focus on strategy, not admin overhead.',
-    image: '/images/remote-virtual-assistance.jpg',
+    image: '/images/Remote Virtual Assistance.jpg',
     bgColor: 'bg-pink-300',
     details: [
       'Email & Calendar Management - Organize inbox, schedule meetings across time zones, send reminders, ensure no conflicts',
@@ -35,7 +35,7 @@ export const SERVICES: ServiceCard[] = [
     id: 2,
     title: 'Data Entry & Management',
     description: 'Fast, accurate data capture with structured spreadsheets designed for analysis. I process 200-400+ records monthly with 99%+ accuracy. Invoice data, CRM updates, financial records—I deliver clean datasets using Excel and Google Sheets.',
-    image: '/images/data-entry.jpg',
+    image: '/images/Data Entry.jpg',
     bgColor: 'bg-blue-300',
     details: [
       'High-Volume Data Entry - 200-400+ records monthly, invoice data, customer records, inventory lists, expense logs with validation checks',
@@ -50,7 +50,7 @@ export const SERVICES: ServiceCard[] = [
     id: 3,
     title: 'IT Support Help Desk L1',
     description: 'I help remote teams integrate software tools, manage cloud systems, and resolve technical issues quickly. From automation setup to day-to-day IT support, I make your systems efficient and dependable.',
-    image: '/images/it-support.png',
+    image: '/images/IT Support Help Desk L1.png',
     bgColor: 'bg-purple-300',
     details: [
       'Software Onboarding - Set up accounts, configure permissions, walk new team members through tools and access',
@@ -68,7 +68,7 @@ export const FEATURES: Feature[] = [
   {
     highlight: "Workflow Automation",
     text: "I design smart automations that eliminate repetitive manual tasks and connect your essential tools—from Google Workspace to Zapier integrations. By streamlining processes like data transfers, email triggers, and task creation, I save your team 5-15 hours weekly and allow you to focus on growth instead of routine.",
-    img: "/images/workflow-automation.jpg",
+    img: "/images/Workflow Automation.jpg",
     reverse: false,
     details: [
       'Auto-import email purchase orders → Google Sheets with categorization',
