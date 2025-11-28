@@ -81,14 +81,14 @@ export default function FeaturesSection() {
   return (
     <section id="features" className="relative w-full bg-[#f5f5f5]" style={{ height: '300vh' }} ref={sectionRef}>
       {/* Timeline */}
-      <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gray-300 -translate-x-1/2 z-[1]">
-        <div ref={progressLineRef} className="absolute top-0 left-0 w-full bg-gradient-to-b from-brand-primary to-brand-dark h-0" />
+      <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gray-300 -translate-x-1/2 z-1">
+        <div ref={progressLineRef} className="absolute top-0 left-0 w-full bg-linear-to-b from-brand-primary to-brand-dark h-0" />
       </div>
       
       {/* Timeline dots */}
-      <div className="absolute left-1/2 w-4 h-4 bg-brand-primary rounded-full -translate-x-1/2 z-[3] shadow-[0_0_15px_rgba(77,100,255,0.6)] animate-pulse" style={{ top: '16.66%' }} />
-      <div className="absolute left-1/2 w-4 h-4 bg-brand-primary rounded-full -translate-x-1/2 z-[3] shadow-[0_0_15px_rgba(77,100,255,0.6)] animate-pulse" style={{ top: '50%' }} />
-      <div className="absolute left-1/2 w-4 h-4 bg-brand-primary rounded-full -translate-x-1/2 z-[3] shadow-[0_0_15px_rgba(77,100,255,0.6)] animate-pulse" style={{ top: '83.33%' }} />
+      <div className="absolute left-1/2 w-4 h-4 bg-brand-primary rounded-full -translate-x-1/2 z-3 shadow-[0_0_15px_rgba(77,100,255,0.6)] animate-pulse" style={{ top: '16.66%' }} />
+      <div className="absolute left-1/2 w-4 h-4 bg-brand-primary rounded-full -translate-x-1/2 z-3 shadow-[0_0_15px_rgba(77,100,255,0.6)] animate-pulse" style={{ top: '50%' }} />
+      <div className="absolute left-1/2 w-4 h-4 bg-brand-primary rounded-full -translate-x-1/2 z-3 shadow-[0_0_15px_rgba(77,100,255,0.6)] animate-pulse" style={{ top: '83.33%' }} />
 
       {FEATURES.map((feature, i) => (
         <div

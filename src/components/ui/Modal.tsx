@@ -97,11 +97,11 @@ export default function Modal({ trigger, title, children }: ModalProps) {
               onClick={(e) => e.stopPropagation()}
             >
               {/* Glass Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/20 via-white/10 to-white/5 backdrop-blur-3xl rounded-4xl border border-white/40" />
+              <div className="absolute inset-0 bg-linear-to-br from-white/20 via-white/10 to-white/5 backdrop-blur-3xl rounded-4xl border border-white/40" />
               
               {/* Shimmer Effect */}
               <div className="absolute inset-0 rounded-4xl opacity-40">
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse" />
+                <div className="absolute inset-0 bg-linear-to-r from-transparent via-white/20 to-transparent animate-pulse" />
               </div>
 
               {/* Close Button */}
@@ -119,7 +119,7 @@ export default function Modal({ trigger, title, children }: ModalProps) {
                 <h2 id="modal-title" className="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">
                   {title}
                 </h2>
-                <div className="h-1 w-24 bg-gradient-to-r from-white/60 to-transparent rounded-full mb-6" />
+                <div className="h-1 w-24 bg-linear-to-r from-white/60 to-transparent rounded-full mb-6" />
                 {children}
               </div>
             </div>

@@ -90,7 +90,7 @@ export default function ContactSection() {
           <div className="mb-6 md:mb-8">
             <div className="mb-8 md:mb-12 lg:mb-16">
               <div className="flex items-center gap-6 md:gap-8 mb-2">
-                <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-36 xl:h-36 rounded-full overflow-hidden flex-shrink-0 bg-gray-700">
+                <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-36 xl:h-36 rounded-full overflow-hidden shrink-0 bg-gray-700">
                   <Image src="/images/Profiel-pic.jpg" alt="Fares Bermak" width={150} height={150} className="w-full h-full object-cover" />
                 </div>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none">
@@ -164,11 +164,11 @@ export default function ContactSection() {
                 <div className="flex gap-6 md:gap-8">
                   <a href={CONTACT_INFO.social.instagram} target="_blank" rel="noopener noreferrer" className="group relative text-sm md:text-base">
                     <span className="inline-block transition-all group-hover:-translate-y-0.5">Instagram</span>
-                    <span className="absolute left-0 bottom-0 w-full h-[1px] bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-center" />
+                    <span className="absolute left-0 bottom-0 w-full h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-center" />
                   </a>
                   <a href={CONTACT_INFO.social.linkedin} target="_blank" rel="noopener noreferrer" className="group relative text-sm md:text-base">
                     <span className="inline-block transition-all group-hover:-translate-y-0.5">LinkedIn</span>
-                    <span className="absolute left-0 bottom-0 w-full h-[1px] bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-center" />
+                    <span className="absolute left-0 bottom-0 w-full h-px bg-white scale-x-0 group-hover:scale-x-100 transition-transform origin-center" />
                   </a>
                 </div>
               </div>
@@ -179,7 +179,7 @@ export default function ContactSection() {
 
       {/* Contact Form Modal */}
       {isFormOpen && (
-        <div className="fixed inset-0 z-[100] bg-black flex items-center justify-center p-6 md:p-12">
+        <div className="fixed inset-0 z-100 bg-black flex items-center justify-center p-6 md:p-12">
           <button onClick={closeForm} className="absolute top-6 right-6 md:top-12 md:right-12 text-white hover:opacity-60 transition-opacity text-4xl md:text-5xl">
             ×
           </button>

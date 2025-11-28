@@ -36,7 +36,7 @@ export default function HeroSection() {
   }, []);
 
   return (
-    <section className="relative h-screen min-h-[100dvh] flex items-center justify-center overflow-hidden">
+    <section className="relative h-screen min-h-dvh flex items-center justify-center overflow-hidden">
       {/* Skip Link for Accessibility */}
       <a
         href="#about"
@@ -98,7 +98,7 @@ export default function HeroSection() {
             <div>in</div>
             <div>Algeria</div>
           </div>
-          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center flex-shrink-0 animate-spin-slow">
+          <div className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0 animate-spin-slow">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="12" r="10" stroke="black" strokeWidth="1.5"/>
               <path d="M2 12h20M12 2c2.5 2.5 4 6 4 10s-1.5 7.5-4 10M12 2C9.5 4.5 8 8 8 12s1.5 7.5 4 10" stroke="black" strokeWidth="1.5"/>
