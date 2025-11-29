@@ -1,10 +1,13 @@
+// src/components/sections/ContactSection.tsx
+// OPTION 1: Using Web3Forms (Recommended - 100% Free, No Signup)
+
 'use client';
 
 import { useState, useRef, useEffect, FormEvent } from 'react';
 import Image from 'next/image';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { CONTACT_INFO } from '@/lib/constants';
-import type { FormStatus, Position, ContactFormData } from '@/types';
+import type { FormStatus, Position } from '@/types';
 
 export default function ContactSection() {
   const [formStatus, setFormStatus] = useState<FormStatus>({ type: null, message: '' });
@@ -39,51 +42,40 @@ export default function ContactSection() {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setFormStatus({ type: null, message: '' });
 
     const formData = new FormData(e.currentTarget);
-    const contactData: ContactFormData = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      message: formData.get('message') as string
-    };
 
     try {
-      const response = await fetch('/api/contact', {
+      // OPTION 1: Web3Forms (Free, No signup needed)
+      // Get your access key from: https://web3forms.com
+      const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(contactData),
+        body: formData,
       });
 
       const data = await response.json();
 
-      if (!response.ok) {
+      if (data.success) {
+        setFormStatus({
+          type: 'success',
+          message: 'Thanks! I\'ll get back to you soon.'
+        });
+        e.currentTarget.reset();
+        setTimeout(() => {
+          setIsFormOpen(false);
+          document.body.style.overflow = 'auto';
+        }, 2000);
+      } else {
         setFormStatus({
           type: 'error',
-          message: data.error || 'Failed to send your message. Please try again.'
+          message: 'Something went wrong. Please email me directly.'
         });
-
-        setIsSubmitting(false);
-        return;
       }
-      // Success case
-      setFormStatus({
-        type: 'success',
-        message: data.message || 'Your message has been sent successfully!'
-      });
-
-      
-      // Reset form
-      e.currentTarget.reset();
-      
-      // Close form after a short delay
-      setTimeout(() => {
-        setIsFormOpen(false);
-        document.body.style.overflow = 'auto';
-      }, 2000);
-    } catch {
+    } catch (error) {
       setFormStatus({
         type: 'error',
-        message: 'An unexpected error occurred. Please try again.'
+        message: 'Connection error. Please try again or email me directly.'
       });
     } finally {
       setIsSubmitting(false);
@@ -98,6 +90,7 @@ export default function ContactSection() {
   const closeForm = () => {
     setIsFormOpen(false);
     document.body.style.overflow = 'auto';
+    setFormStatus({ type: null, message: '' });
   };
 
   return (
@@ -222,6 +215,15 @@ export default function ContactSection() {
           <div className="max-w-4xl w-full">
             <h3 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-12 md:mb-16">Get in touch</h3>
             <form className="space-y-8" onSubmit={handleSubmit}>
+              {/* IMPORTANT: Add your Web3Forms access key here */}
+              <input type="hidden" name="access_key" value="YOUR_ACCESS_KEY_HERE" />
+              
+              {/* Optional: Redirect after submission */}
+              <input type="hidden" name="redirect" value="https://yourdomain.com/thank-you" />
+              
+              {/* Optional: Subject line for email */}
+              <input type="hidden" name="subject" value="New Contact Form Submission" />
+              
               <div>
                 <label htmlFor="name" className="block text-white text-sm mb-3 uppercase tracking-wider">Name</label>
                 <input type="text" id="name" name="name" required className="w-full bg-transparent border-b border-white/30 text-white text-xl md:text-2xl py-3 focus:outline-none focus:border-white transition-colors" placeholder="Your name" />
@@ -234,6 +236,10 @@ export default function ContactSection() {
                 <label htmlFor="message" className="block text-white text-sm mb-3 uppercase tracking-wider">Message</label>
                 <textarea id="message" name="message" required rows={5} className="w-full bg-transparent border-b border-white/30 text-white text-xl md:text-2xl py-3 focus:outline-none focus:border-white transition-colors resize-none" placeholder="Your message..." />
               </div>
+              
+              {/* Honeypot for spam protection */}
+              <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
+              
               <div className="mt-8">
                 {formStatus.type === 'success' && <div className="mb-4 p-4 rounded-lg bg-green-100 text-green-800">{formStatus.message}</div>}
                 {formStatus.type === 'error' && <div className="mb-4 p-4 rounded-lg bg-red-100 text-red-800">{formStatus.message}</div>}
