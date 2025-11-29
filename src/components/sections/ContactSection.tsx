@@ -72,7 +72,7 @@ export default function ContactSection() {
           message: 'Something went wrong. Please email me directly.'
         });
       }
-    } catch (error) {
+    } catch {
       setFormStatus({
         type: 'error',
         message: 'Connection error. Please try again or email me directly.'
