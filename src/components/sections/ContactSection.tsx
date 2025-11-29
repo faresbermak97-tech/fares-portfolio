@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, FormEvent } from 'react';
 import Image from 'next/image';
 import { useCurrentTime } from '@/hooks/useCurrentTime';
 import { CONTACT_INFO } from '@/lib/constants';
-import type { FormStatus, Position } from '@/types';
+import type { FormStatus, Position, ContactFormData } from '@/types';
 
 export default function ContactSection() {
   const [formStatus, setFormStatus] = useState<FormStatus>({ type: null, message: '' });
@@ -41,7 +41,7 @@ export default function ContactSection() {
     setIsSubmitting(true);
 
     const formData = new FormData(e.currentTarget);
-    const contactData = {
+    const contactData: ContactFormData = {
       name: formData.get('name') as string,
       email: formData.get('email') as string,
       message: formData.get('message') as string
@@ -57,17 +57,34 @@ export default function ContactSection() {
       const data = await response.json();
 
       if (!response.ok) {
-        setFormStatus({ type: 'error', message: data.error || 'Failed to send your message.' });
-      } else {
-        setFormStatus({ type: 'success', message: data.message || 'Message sent successfully!' });
-        e.currentTarget.reset();
-        setTimeout(() => {
-          setIsFormOpen(false);
-          document.body.style.overflow = 'auto';
-        }, 2000);
+        setFormStatus({
+          type: 'error',
+          message: data.error || 'Failed to send your message. Please try again.'
+        });
+
+        setIsSubmitting(false);
+        return;
       }
+      // Success case
+      setFormStatus({
+        type: 'success',
+        message: data.message || 'Your message has been sent successfully!'
+      });
+
+      
+      // Reset form
+      e.currentTarget.reset();
+      
+      // Close form after a short delay
+      setTimeout(() => {
+        setIsFormOpen(false);
+        document.body.style.overflow = 'auto';
+      }, 2000);
     } catch {
-      setFormStatus({ type: 'error', message: 'An unexpected error occurred.' });
+      setFormStatus({
+        type: 'error',
+        message: 'An unexpected error occurred. Please try again.'
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -85,13 +102,19 @@ export default function ContactSection() {
 
   return (
     <>
-      <section id="contact" className="relative bg-[#141414] text-white px-2 md:px-6 lg:px-8 pt-8 md:pt-16 pb-2">
+      <section id="contact" className="animate-section relative bg-[#141414] text-white px-2 md:px-6 lg:px-8 pt-8 md:pt-16 pb-2">
         <div className="max-w-7xl mx-auto w-full">
           <div className="mb-6 md:mb-8">
             <div className="mb-8 md:mb-12 lg:mb-16">
               <div className="flex items-center gap-6 md:gap-8 mb-2">
                 <div className="w-24 h-24 md:w-28 md:h-28 lg:w-32 lg:h-32 xl:w-36 xl:h-36 rounded-full overflow-hidden shrink-0 bg-gray-700">
-                  <Image src="/images/Profiel-pic.jpg" alt="Fares Bermak" width={150} height={150} className="w-full h-full object-cover" />
+                  <Image
+                    src="/images/Profiel-pic.JPG"
+                    alt="Fares Bermak"
+                    width={150}
+                    height={150}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
                 <h1 className="text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none">
                   Let&apos;s work
@@ -120,10 +143,10 @@ export default function ContactSection() {
                     setButtonPosition({ x: x * 0.8, y: y * 0.5 });
                   }}
                   onMouseLeave={() => setButtonPosition({ x: 0, y: 0 })}
-                  className="w-40 h-40 lg:w-44 lg:h-44 rounded-full bg-brand-primary hover:bg-brand-dark flex items-center justify-center text-base lg:text-lg transition-all duration-300 hover:scale-105"
+                  className={`contact-button w-40 h-40 lg:w-44 lg:h-44 rounded-full bg-[#4D64FF] hover:bg-[#3d50cc] flex items-center justify-center text-base lg:text-lg text-white transition-all duration-300 cursor-pointer hover:scale-105 ${buttonPosition.x !== 0 || buttonPosition.y !== 0 ? 'button-moved' : ''}`}
                   style={{ transform: 'translateY(-50%)' }}
                 >
-                  <span className="hover:animate-pulse">Get in touch</span>
+                  <span className="inline-block hover:animate-pulse">Get in touch</span>
                 </button>
               </div>
             </div>
@@ -131,16 +154,29 @@ export default function ContactSection() {
             <div className="relative">
               <div className="flex flex-col lg:flex-row items-start gap-6">
                 <div className="flex flex-col sm:flex-row gap-4 md:gap-6">
-                  <a href={`mailto:${CONTACT_INFO.email}`} className="group relative inline-block border border-white/40 rounded-full px-6 md:px-8 py-3 md:py-4 text-sm md:text-base overflow-hidden transition-all hover:border-brand-primary">
-                    <span className="absolute inset-0 bg-brand-primary rounded-full scale-y-0 origin-bottom transition-transform duration-700 group-hover:scale-y-100" />
-                    <span className="relative z-10 text-white">{CONTACT_INFO.email}</span>
+                  <a
+                    href={`mailto:${CONTACT_INFO.email}`}
+                    className="contact-link group relative inline-block border border-white/40 rounded-full px-6 md:px-8 py-3 md:py-4 text-sm md:text-base overflow-hidden transition-all duration-300 hover:border-[#4D64FF]"
+                  >
+                    <span className="absolute inset-0 bg-[#4D64FF] rounded-full scale-y-0 origin-bottom transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-y-100"></span>
+                    <span className="relative z-10 inline-block text-white transition-all duration-500 ease-out group-hover:text-white">
+                      {CONTACT_INFO.email}
+                    </span>
                   </a>
-                  <a href={`tel:${CONTACT_INFO.phone}`} className="group relative inline-block border border-white/40 rounded-full px-6 md:px-8 py-3 md:py-4 text-sm md:text-base overflow-hidden transition-all hover:border-brand-primary">
-                    <span className="absolute inset-0 bg-brand-primary rounded-full scale-y-0 origin-bottom transition-transform duration-700 group-hover:scale-y-100" />
-                    <span className="relative z-10 text-white">{CONTACT_INFO.phone}</span>
+                  <a
+                    href={`tel:${CONTACT_INFO.phone}`}
+                    className="contact-link group relative inline-block border border-white/40 rounded-full px-6 md:px-8 py-3 md:py-4 text-sm md:text-base overflow-hidden transition-all duration-300 hover:border-[#4D64FF]"
+                  >
+                    <span className="absolute inset-0 bg-[#4D64FF] rounded-full scale-y-0 origin-bottom transition-transform duration-700 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:scale-y-100"></span>
+                    <span className="relative z-10 inline-block text-white transition-all duration-500 ease-out group-hover:text-white">
+                      {CONTACT_INFO.phone}
+                    </span>
                   </a>
                 </div>
-                <button onClick={openForm} className="lg:hidden w-40 h-40 rounded-full bg-brand-primary hover:bg-brand-dark flex items-center justify-center text-base transition-all hover:scale-105">
+                <button
+                  onClick={openForm}
+                  className="lg:hidden w-40 h-40 rounded-full bg-[#4D64FF] hover:bg-[#3d50cc] flex items-center justify-center text-base transition-all duration-300 hover:scale-105"
+                >
                   Get in touch
                 </button>
               </div>
