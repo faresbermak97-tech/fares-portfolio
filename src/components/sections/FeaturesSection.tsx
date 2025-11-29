@@ -2,164 +2,119 @@
 
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { FEATURES } from '@/lib/constants';
 import Modal from '@/components/ui/Modal';
 
 export default function FeaturesSection() {
   const sectionRef = useRef<HTMLElement>(null);
-  const slidesRef = useRef<HTMLDivElement[]>([]);
-  const progressLineRef = useRef<HTMLDivElement>(null);
-  const [isReady, setIsReady] = useState(false);
+  const [visibleSlides, setVisibleSlides] = useState<Set<number>>(new Set());
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
-    
-    gsap.registerPlugin(ScrollTrigger);
-    
-    // Use setTimeout to defer state update
-    const timer = setTimeout(() => setIsReady(true), 0);
-    return () => clearTimeout(timer);
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const index = parseInt(entry.target.getAttribute('data-index') || '0');
+          if (entry.isIntersecting) {
+            setVisibleSlides(prev => new Set(prev).add(index));
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    const slides = sectionRef.current?.querySelectorAll('.feature-slide');
+    slides?.forEach(slide => observer.observe(slide));
+
+    return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!isReady) return;
-
-    const triggers: ScrollTrigger[] = [];
-    const validSlides = slidesRef.current.filter(slide => slide !== null);
-    
-    if (validSlides.length === 0) return;
-
-    validSlides.forEach((slide, slideIndex) => {
-      const text = slide.querySelector(".slide-text") as HTMLElement;
-      const img = slide.querySelector(".slide-img") as HTMLElement;
-
-      if (!text || !img) return;
-
-      gsap.set(text, { opacity: 0, x: 60 });
-      gsap.set(img, { opacity: 0, x: -60 });
-
-      const textTrigger = ScrollTrigger.create({
-        trigger: slide,
-        start: `${slideIndex * 100}vh center`,
-        end: `${(slideIndex + 1) * 100}vh center`,
-        onEnter: () => gsap.to(text, { opacity: 1, x: 0, duration: 1, ease: "power3.out" }),
-        onLeaveBack: () => gsap.to(text, { opacity: 0, x: 60, duration: 1, ease: "power3.out" })
-      });
-      triggers.push(textTrigger);
-
-      const imgTrigger = ScrollTrigger.create({
-        trigger: slide,
-        start: `${slideIndex * 100}vh center`,
-        end: `${(slideIndex + 1) * 100}vh center`,
-        onEnter: () => gsap.to(img, { opacity: 1, x: 0, duration: 1, ease: "power3.out" }),
-        onLeaveBack: () => gsap.to(img, { opacity: 0, x: -60, duration: 1, ease: "power3.out" })
-      });
-      triggers.push(imgTrigger);
-    });
-
-    if (progressLineRef.current && sectionRef.current) {
-      const progressTrigger = ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: "top center",
-        end: "bottom center",
-        scrub: true,
-        onUpdate: (self) => {
-          if (progressLineRef.current) {
-            gsap.set(progressLineRef.current, { height: `${self.progress * 100}%` });
-          }
-        }
-      });
-      triggers.push(progressTrigger);
-    }
-
-    return () => triggers.forEach(trigger => trigger.kill());
-  }, [isReady]);
-
   return (
-    <section id="features" className="relative w-full bg-[#f5f5f5]" style={{ height: '300vh' }} ref={sectionRef}>
+    <section 
+      id="features" 
+      ref={sectionRef}
+      className="relative w-full bg-[#f5f5f5]" 
+      style={{ minHeight: '300vh' }}
+    >
       {/* Timeline */}
-      <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gray-300 -translate-x-1/2 z-1">
-        <div ref={progressLineRef} className="absolute top-0 left-0 w-full bg-linear-to-b from-brand-primary to-brand-dark h-0" />
+      <div className="absolute top-0 left-1/2 w-0.5 h-full bg-gray-300 -translate-x-1/2">
+        <div className="sticky top-0 h-screen">
+          <div className="absolute left-0 w-full bg-linear-to-b from-[#4D64FF] to-[#3d50cc]" 
+               style={{ height: '33.33%' }} />
+        </div>
       </div>
       
       {/* Timeline dots */}
-      <div className="absolute left-1/2 w-4 h-4 bg-brand-primary rounded-full -translate-x-1/2 z-3 shadow-[0_0_15px_rgba(77,100,255,0.6)] animate-pulse" style={{ top: '16.66%' }} />
-      <div className="absolute left-1/2 w-4 h-4 bg-brand-primary rounded-full -translate-x-1/2 z-3 shadow-[0_0_15px_rgba(77,100,255,0.6)] animate-pulse" style={{ top: '50%' }} />
-      <div className="absolute left-1/2 w-4 h-4 bg-brand-primary rounded-full -translate-x-1/2 z-3 shadow-[0_0_15px_rgba(77,100,255,0.6)] animate-pulse" style={{ top: '83.33%' }} />
+      {[16.66, 50, 83.33].map((top, i) => (
+        <div 
+          key={i}
+          className="absolute left-1/2 w-4 h-4 bg-[#4D64FF] rounded-full -translate-x-1/2 shadow-lg" 
+          style={{ top: `${top}%` }} 
+        />
+      ))}
 
       {FEATURES.map((feature, i) => (
         <div
           key={i}
-          ref={(el) => { if (el) slidesRef.current[i] = el; }}
-          className={`grid items-center justify-center h-screen px-[6%] box-border ${
-            feature.reverse ? 'grid-cols-[1fr_8px_1fr]' : 'grid-cols-[1fr_8px_1fr]'
-          }`}
+          data-index={i}
+          className="feature-slide min-h-screen flex items-center justify-center px-6 md:px-12"
         >
-          <div className={`flex justify-center items-center ${feature.reverse ? 'order-3' : 'order-1'}`}>
-            <div className="slide-img">
+          <div className={`max-w-7xl w-full grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-8 items-center ${
+            feature.reverse ? 'lg:grid-flow-dense' : ''
+          }`}>
+            {/* Image */}
+            <div 
+              className={`${feature.reverse ? 'lg:col-start-3' : 'lg:col-start-1'} transition-all duration-1000 ${
+                visibleSlides.has(i) ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'
+              }`}
+            >
               <Image 
                 src={feature.img}
                 width={500} 
-                alt={feature.highlight}
                 height={400}
-                className="w-[90%] max-w-[500px] h-[400px] object-cover rounded-2xl shadow-[0_8px_32px_rgba(77,100,255,0.15)] transition-all duration-300 hover:scale-[1.02] hover:shadow-[0_12px_48px_rgba(77,100,255,0.25)]"
+                alt={feature.highlight}
+                className="w-full max-w-[500px] h-[400px] mx-auto object-cover rounded-2xl shadow-xl hover:scale-105 transition-transform duration-300"
               />
             </div>
-          </div>
-          
-          <div className={`w-0.5 h-[60%] bg-gray-300 rounded-sm mx-auto ${feature.reverse ? 'order-2' : 'order-2'}`} />
-          
-          <div className={`slide-text px-10 ${feature.reverse ? 'order-1' : 'order-3'}`}>
-            <h2 className="text-[clamp(32px,5vw,56px)] font-bold text-[#0b1220] -mt-5 mb-6 leading-[1.2]">
-              <span className="text-brand-primary">{feature.highlight}</span>
-            </h2>
-            <p className="text-lg text-gray-600 leading-relaxed max-w-[480px] mb-8">
-              {feature.text}
-            </p>
-            <Modal
-              title={feature.highlight}
-              trigger={
-                <span className="group relative inline-flex items-center gap-2 px-6 py-2 rounded-full bg-black/70 hover:bg-black/80 backdrop-blur-md border border-black/50 hover:border-black/70 transition-all duration-300 text-white text-sm font-medium">
-                  <span>Detail</span>
-                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                  </svg>
-                </span>
-              }
+            
+            {/* Divider */}
+            <div className="hidden lg:block w-0.5 h-[60%] bg-gray-300 rounded-sm mx-8" />
+            
+            {/* Text */}
+            <div 
+              className={`${feature.reverse ? 'lg:col-start-1' : 'lg:col-start-3'} transition-all duration-1000 delay-200 ${
+                visibleSlides.has(i) ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-12'
+              }`}
             >
-              <ul className="space-y-3">
-                {feature.details.map((detail, idx) => (
-                  <li key={idx} className="text-white/90 flex items-start gap-3">
-                    <span className="text-white/60 text-lg leading-relaxed mt-0.5">•</span>
-                    <p className="text-base md:text-lg leading-relaxed">{detail}</p>
-                  </li>
-                ))}
-              </ul>
-            </Modal>
+              <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6 leading-tight">
+                <span className="text-[#4D64FF]">{feature.highlight}</span>
+              </h2>
+              <p className="text-lg text-gray-600 leading-relaxed max-w-[480px] mb-8">
+                {feature.text}
+              </p>
+              <Modal
+                title={feature.highlight}
+                trigger={
+                  <span className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-black/70 hover:bg-black/80 text-white text-sm font-medium transition-all cursor-pointer">
+                    <span>View Details</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </span>
+                }
+              >
+                <ul className="space-y-3">
+                  {feature.details.map((detail, idx) => (
+                    <li key={idx} className="text-white/90 flex items-start gap-3">
+                      <span className="text-white/60 mt-1">•</span>
+                      <p className="text-base md:text-lg leading-relaxed">{detail}</p>
+                    </li>
+                  ))}
+                </ul>
+              </Modal>
+            </div>
           </div>
         </div>
       ))}
-
-      <style jsx>{`
-        @media (max-width: 900px) {
-          div[class*="grid"] {
-            grid-template-columns: 1fr !important;
-            height: auto !important;
-            padding: 80px 6% !important;
-          }
-          div[class*="order-"] {
-            order: unset !important;
-            text-align: center;
-          }
-          .slide-img img {
-            width: 100%;
-            max-width: 400px;
-            height: auto;
-          }
-        }
-      `}</style>
     </section>
   );
 }

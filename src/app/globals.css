@@ -24,8 +24,3 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-.service-card {
-  outline: 3px solid red !important;
-  opacity: 1 !important;
-  transform: none !important;
-}
